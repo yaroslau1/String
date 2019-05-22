@@ -1,11 +1,45 @@
 package com.work.brackets;
 
+import com.work.enums.BracketsType;
 import com.work.exception.BracketsException;
 
-public class Brackets {
+public abstract class Brackets {
 
-    private int counter = 0;
+    private BracketsType bracketsType;
+
+    public Brackets(BracketsType bracketsType) {
+        this.bracketsType = bracketsType;
+    }
+
+    public BracketsType getBracketsType() {
+        return bracketsType;
+    }
+
+    public void checkString(String string) throws BracketsException {
+        char[] stringToArray = string.toCharArray();
+        int counter = 0;
+        char open = bracketsType.getOpen();
+        char close = bracketsType.getClose();
+        for (char symbol : stringToArray) {
+            if (symbol == open) {
+                counter++;
+            }
+            if (symbol == close) {
+                counter--;
+            }
+        }
+        if (counter < 0 || counter > 0) {
+            throw new BracketsException("error with brackets: ", open, close);
+        } else {
+            System.out.println("no errors with brackets: " + open + " " + close);
+        }
+    }
+
+
+    /*private int counter = 0;
     private int error = 0;
+
+
 
     public void checkString(String string, String brackets) throws BracketsException {
         char[] stringToArray = string.toCharArray();
@@ -36,5 +70,5 @@ public class Brackets {
                 error++;
             }
         }
-    }
+    }*/
 }
