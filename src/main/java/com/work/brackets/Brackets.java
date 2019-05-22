@@ -7,8 +7,9 @@ public abstract class Brackets {
 
     private BracketsType bracketsType;
 
-    public Brackets(BracketsType bracketsType) {
+    public Brackets(BracketsType bracketsType, String string) throws BracketsException {
         this.bracketsType = bracketsType;
+        checkString(string);
     }
 
     public BracketsType getBracketsType() {
