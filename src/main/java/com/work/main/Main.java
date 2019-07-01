@@ -4,6 +4,7 @@ import com.work.enums.BracketsType;
 import com.work.exception.BracketsException;
 import com.work.factory.BracketsFactory;
 import com.work.file.Read;
+import com.work.interfaces.ICheckString;
 import com.work.memory.Memory;
 import com.work.scaners.ConsoleScanner;
 import com.work.threads.ThreadRead;
@@ -13,6 +14,11 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) {
         ConsoleScanner consoleScanner = new ConsoleScanner();
+        ICheckString checkString;
+        checkString = (bracket, s) -> {
+            BracketsFactory.checkString(bracket, s);
+
+        };
         Memory memory = new Memory();
         String string;
         boolean exit = true;
@@ -31,10 +37,10 @@ public class Main {
                     string = consoleScanner.enterString();
                     memory.saveString(string);
                     try {
-                        BracketsFactory.checkString(BracketsType.ROUND, string);
-                        BracketsFactory.checkString(BracketsType.CURLY, string);
-                        BracketsFactory.checkString(BracketsType.TRIANGULAR, string);
-                        BracketsFactory.checkString(BracketsType.SQUARE, string);
+                        checkString.checkBracket(BracketsType.ROUND, string);
+                        checkString.checkBracket(BracketsType.CURLY, string);
+                        checkString.checkBracket(BracketsType.TRIANGULAR, string);
+                        checkString.checkBracket(BracketsType.SQUARE, string);
                     } catch (BracketsException e) {
                         System.out.println(e);
                         System.out.println(e.getOpen() + " " + e.getClose());
@@ -50,7 +56,7 @@ public class Main {
                     memory.saveString(string);
                     break;
                 case 4:
-                    for(int i = 1; i <= 1000; i++){
+                    for (int i = 1; i <= 1000; i++) {
                         ThreadRead threadRead = new ThreadRead(i);
                         threadRead.start();
                     }
