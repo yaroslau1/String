@@ -4,20 +4,24 @@ import com.work.enums.BracketsType;
 import com.work.exception.BracketsException;
 import com.work.factory.BracketsFactory;
 import com.work.file.Read;
-import com.work.interfaces.ICheckString;
 import com.work.memory.Memory;
 import com.work.scaners.ConsoleScanner;
 import com.work.threads.ThreadRead;
 
 import java.io.File;
+import java.util.function.BiConsumer;
 
 public class Main {
     public static void main(String[] args) {
         ConsoleScanner consoleScanner = new ConsoleScanner();
-        ICheckString checkString;
-        checkString = (bracket, s) -> {
-            BracketsFactory.checkString(bracket, s);
-
+        BiConsumer<BracketsType, String> check = (bracket, s) -> {
+            try {
+                BracketsFactory.checkString(bracket, s);
+            } catch (BracketsException e) {
+                System.out.println(e);
+                System.out.println(e.getOpen() + " " + e.getClose());
+                e.printStackTrace();
+            }
         };
         Memory memory = new Memory();
         String string;
@@ -36,16 +40,10 @@ public class Main {
                 case 1:
                     string = consoleScanner.enterString();
                     memory.saveString(string);
-                    try {
-                        checkString.checkBracket(BracketsType.ROUND, string);
-                        checkString.checkBracket(BracketsType.CURLY, string);
-                        checkString.checkBracket(BracketsType.TRIANGULAR, string);
-                        checkString.checkBracket(BracketsType.SQUARE, string);
-                    } catch (BracketsException e) {
-                        System.out.println(e);
-                        System.out.println(e.getOpen() + " " + e.getClose());
-                        e.printStackTrace();
-                    }
+                    check.accept(BracketsType.ROUND, string);
+                    check.accept(BracketsType.CURLY, string);
+                    check.accept(BracketsType.TRIANGULAR, string);
+                    check.accept(BracketsType.SQUARE, string);
                     break;
                 case 2:
                     memory.showMemory();
