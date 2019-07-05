@@ -1,5 +1,8 @@
 package com.work.memory;
 
+import com.work.annotations.CheckBrackets;
+import com.work.exception.BracketsException;
+
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -18,7 +21,8 @@ public class Memory {
         lastCacheClean = createTime;
     }
 
-    public void saveString(String string) {
+    public void saveString(@CheckBrackets(exception = BracketsException.class) String string) {
+        System.out.println(string);
         cleanCash();
         dictionary.add(string);
     }
