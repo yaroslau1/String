@@ -3,6 +3,7 @@ package com.work.memory;
 import com.work.annotations.CheckBrackets;
 import com.work.exception.BracketsException;
 
+import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -21,7 +22,16 @@ public class Memory {
         lastCacheClean = createTime;
     }
 
-    public void saveString(@CheckBrackets(exception = BracketsException.class) String string) {
+    public static void main(String[] args) {
+        saveStringTest(null);
+    }
+
+    @CheckBrackets
+    public static void saveStringTest(@NotNull @CheckBrackets String string) {
+        System.out.println(string);
+    }
+
+    public void saveString(@CheckBrackets String string) {
         System.out.println(string);
         cleanCash();
         dictionary.add(string);
